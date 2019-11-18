@@ -217,7 +217,7 @@ class ExcelKeywords {
 		}
 		Row row = sheet.getRow(rowIndex)
 		if (row == null) row = sheet.createRow(rowIndex)
-		Cell cell = row.getCell(colIndex, Row.CREATE_NULL_AS_BLANK)
+		Cell cell = row.getCell(colIndex, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
 		setValueToCell(cell, value)
 	}
 
@@ -239,7 +239,7 @@ class ExcelKeywords {
 		CellReference cr = new CellReference(cellAddress)
 		Row row = sheet.getRow(cr.getRow())
 		if (row == null) row = sheet.createRow(cr.getRow())
-		Cell cell = row.getCell(cr.getCol(), Row.CREATE_NULL_AS_BLANK)
+		Cell cell = row.getCell(cr.getCol(), Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
 		setValueToCell(cell, value)
 	}
 
@@ -687,7 +687,7 @@ class ExcelKeywords {
 			int lastRowNum = sheet.getLastRowNum()
 			for (int i= 0; i <= lastRowNum; i ++){
 				if (sheet.getRow(i) == null) sheet.createRow(i)
-				cells.add(sheet.getRow(i).getCell(index, Row.CREATE_NULL_AS_BLANK))
+				cells.add(sheet.getRow(i).getCell(index, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK))
 			}
 			columns.put(index, cells)
 		}
