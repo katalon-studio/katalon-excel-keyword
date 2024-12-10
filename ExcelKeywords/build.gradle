@@ -1,12 +1,18 @@
 plugins {
   id 'java'
   id 'groovy'
-  id 'com.github.johnrengelman.shadow' version '4.0.4'
-  id "com.katalon.gradle-plugin" version "0.0.6"
+  id 'com.github.johnrengelman.shadow' version '7.1.0'
+  id "com.katalon.gradle-plugin" version "0.1.2"
 }
 
 repositories {
   mavenCentral()
+  maven {
+    url 'https://jaspersoft.jfrog.io/jaspersoft/jaspersoft-repo/'
+  }
+  flatDir {
+    dirs 'lib'
+  }
 }
 
 def pluginSources = [
@@ -24,6 +30,12 @@ sourceSets {
   }
 }
 
+
+java {
+    withSourcesJar()
+    // and/or analogously use “withJavadocJar()” to get a “javadocJar” task
+}
+
 shadowJar {
   exclude 'Temp*.class'
 }
@@ -32,3 +44,4 @@ groovydoc {
   source = pluginSources
   docTitle = 'Excel Custom Keywords'
 }
+

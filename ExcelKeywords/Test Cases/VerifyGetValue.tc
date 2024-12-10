@@ -4,5 +4,6 @@
    <name>VerifyGetValue</name>
    <tag></tag>
    <comment></comment>
+   <recordOption>OTHER</recordOption>
    <testCaseGuid>b0403a94-8f1f-4fc3-903a-ca46999d3667</testCaseGuid>
 </TestCaseEntity>

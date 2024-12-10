@@ -17,15 +17,15 @@ WebUI.openBrowser('')
 
 WebUI.navigateToUrl('https://katalon-demo-cura.herokuapp.com/profile.php#login')
 
-sheet = CustomKeywords.'ExcelParser.ExcelParser.getExcelSheet'('D:\\Document\\Temp\\Demo2.xlsx', 0)
+sheet = CustomKeywords.'com.kms.katalon.keyword.excel.ExcelKeywords.getExcelSheet'('D:\\Document\\Temp\\Demo2.xlsx', 0)
 
-cell = CustomKeywords.'ExcelParser.ExcelParser.getCellByIndex'(sheet, 1, 0)
+cell = CustomKeywords.'com.kms.katalon.keyword.excel.ExcelKeywords.getCellByIndex'(sheet, 1, 0)
 
-username = CustomKeywords.'ExcelParser.ExcelParser.getCellValue'(cell)
+username = CustomKeywords.'com.kms.katalon.keyword.excel.ExcelKeywords.getCellValue'(cell)
 
-password = CustomKeywords.'ExcelParser.ExcelParser.getCellValueByIndex'(sheet, 1, 1)
+password = CustomKeywords.'com.kms.katalon.keyword.excel.ExcelKeywords.getCellValueByIndex'(sheet, 1, 1)
 
-comment = CustomKeywords.'ExcelParser.ExcelParser.getCellValueByAddress'(sheet, 'C2')
+comment = CustomKeywords.'com.kms.katalon.keyword.excel.ExcelKeywords.getCellValueByAddress'(sheet, 'C2')
 
 WebUI.setText(findTestObject('Page_CURA Healthcare Service/input_Username_username'), username)
 

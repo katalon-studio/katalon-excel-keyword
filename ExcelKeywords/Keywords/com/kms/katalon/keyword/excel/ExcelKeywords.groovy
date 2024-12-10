@@ -160,18 +160,17 @@ class ExcelKeywords {
 		switch(type) {
 			case "String":
 				if (String.valueOf(value).equalsIgnoreCase("")) {
-					cell.setCellType(Cell.CELL_TYPE_BLANK)
+					cell.setCellType(CellType.BLANK)
 					cell.setCellValue("")
 				} else if (String.valueOf(value).take(1)==("=")) {
-					cell.setCellType(Cell.CELL_TYPE_FORMULA)
 					cell.setCellFormula(String.valueOf(value).substring(1))
 				} else {
-					cell.setCellType(Cell.CELL_TYPE_STRING)
+					cell.setCellType(CellType.STRING)
 					cell.setCellValue(String.valueOf(value))
 				}
 				break
 			case "Boolean":
-				cell.setCellType(Cell.CELL_TYPE_BOOLEAN)
+				cell.setCellType(CellType.BOOLEAN)
 				cell.setCellValue((Boolean) value)
 				break
 			case "Integer":
@@ -179,11 +178,11 @@ class ExcelKeywords {
 			case "Float":
 			case "Double":
 			case "BigDecimal":
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC)
+				cell.setCellType(CellType.NUMERIC)
 				cell.setCellValue((Double) value)
 				break
 			case "Date":
-				cell.setCellType(Cell.CELL_TYPE_NUMERIC)
+				cell.setCellType(CellType.NUMERIC)
 				Workbook workbook = cell.getSheet().getWorkbook()
 				short dateFormat = workbook.createDataFormat().getFormat("MM/dd/yyyy")
 				CellStyle cellStyle =  workbook.createCellStyle()
@@ -192,7 +191,7 @@ class ExcelKeywords {
 				cell.setCellValue((Date) value)
 				break
 			default:
-				cell.setCellType(Cell.CELL_TYPE_STRING)
+				cell.setCellType(CellType.STRING)
 				cell.setCellValue(value.toString())
 				break
 		}
@@ -357,7 +356,7 @@ class ExcelKeywords {
 			for (Cell cell : row) {
 				def cellValue = ""
 				switch (cell.getCellType()) {
-					case Cell.CELL_TYPE_NUMERIC:
+					case CellType.NUMERIC:
 						if(DateUtil.isCellDateFormatted(cell)){
 							DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy")
 							cellValue= sdf.format(cell.getDateCellValue())
@@ -370,16 +369,16 @@ class ExcelKeywords {
 							}
 						}
 						break
-					case Cell.CELL_TYPE_STRING:
+					case CellType.STRING:
 						cellValue= cell.getStringCellValue().toString()
 						break
-					case Cell.CELL_TYPE_BLANK:
+					case CellType.BLANK:
 						cellValue= ""
 						break
-					case Cell.CELL_TYPE_BOOLEAN:
+					case CellType.BOOLEAN:
 						cellValue= cell.getBooleanCellValue().toString()
 						break
-					case Cell.CELL_TYPE_FORMULA:
+					case CellType.FORMULA:
 						cellValue= cell.getCellFormula().toString()
 						break
 				}
@@ -404,7 +403,7 @@ class ExcelKeywords {
 	@Keyword
 	static def getCellValue(Cell cell){
 		switch (cell.getCellType()) {
-			case Cell.CELL_TYPE_NUMERIC:
+			case CellType.NUMERIC:
 				try{
 					if(DateUtil.isCellDateFormatted(cell)){
 						DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy")
@@ -438,18 +437,18 @@ class ExcelKeywords {
 				}
 
 				break
-			case Cell.CELL_TYPE_STRING:
+			case CellType.STRING:
 				return cell.getStringCellValue()
 				break
-			case Cell.CELL_TYPE_BLANK:
+			case CellType.BLANK:
 				return ""
 				break
-			case Cell.CELL_TYPE_BOOLEAN:
+			case CellType.BOOLEAN:
 				return cell.getBooleanCellValue()
 				break
-			case Cell.CELL_TYPE_FORMULA:
+			case CellType.FORMULA:
 				switch(cell.getCachedFormulaResultType()) {
-					case Cell.CELL_TYPE_NUMERIC:
+					case CellType.NUMERIC:
 					if (cell.getNumericCellValue().toString().split("\\.").size ()>0){
 						if (cell.getNumericCellValue().toString().split("\\.")[1] == "0"){
 							return Integer.parseInt(cell.getNumericCellValue().toString().replace(".0",""))
@@ -460,7 +459,7 @@ class ExcelKeywords {
 					else {
 						return cell.getNumericCellValue()
 					}
-					case Cell.CELL_TYPE_STRING:
+					case CellType.STRING:
 					return cell.getStringCellValue()
 					break
 				}
@@ -570,7 +569,7 @@ class ExcelKeywords {
 	@CompileStatic
 	@Keyword
 	static List<Row> getDataRows(Sheet sheet, List<Integer> rowIndexs){
-		List rowCollection = []
+		List<Row> rowCollection = []
 		Row row
 		for (int i = 0; i < rowIndexs.size(); i++){
 			row = sheet.getRow(rowIndexs[i])
@@ -823,22 +822,22 @@ class ExcelKeywords {
 		if (cell1.getCellType() == cell2.getCellType()) {
 			if ((isValueOnly) || (cell1.getCellStyle() == cell2.getCellStyle())) {
 				switch (cell1.getCellType()) {
-					case Cell.CELL_TYPE_FORMULA:
+					case CellType.FORMULA:
 						equalCells = cell1.getCellFormula() == cell2.getCellFormula()
 						break
-					case Cell.CELL_TYPE_NUMERIC:
+					case CellType.NUMERIC:
 						equalCells = cell1.getNumericCellValue() == cell2.getNumericCellValue()
 						break
-					case Cell.CELL_TYPE_BLANK:
-						equalCells = cell2.getCellType() == Cell.CELL_TYPE_BLANK
+					case CellType.BLANK:
+						equalCells = cell2.getCellType() == CellType.BLANK
 						break
-					case Cell.CELL_TYPE_BOOLEAN:
+					case CellType.BOOLEAN:
 						equalCells = cell1.getBooleanCellValue() == cell2.getBooleanCellValue()
 						break
-					case Cell.CELL_TYPE_ERROR:
+					case CellType.ERROR:
 						equalCells = cell1.getErrorCellValue() == cell2.getErrorCellValue()
 						break
-					case Cell.CELL_TYPE_STRING:
+					case CellType.STRING:
 						equalCells = cell1.getStringCellValue() == cell2.getStringCellValue()
 						break
 					default:
@@ -861,7 +860,7 @@ class ExcelKeywords {
 	 * @return a formula if cell is formula type, cell value if not
 	 */
 	static def getCellFormula(Cell cell) {
-		if(cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+		if(cell.getCellType() == CellType.FORMULA)
 			return "=" + cell.getCellFormula()
 		else return getCellValue(cell)
 	}
